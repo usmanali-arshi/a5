@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+import socket
+import argparse
+from pathlib import Path
+from typing import Tuple
+
+FILE_DIR: Path = Path(__file__).parent.resolve()
+HOST: str = "localhost"
+
+
+# TODO: Choose a P value that is shared with the client.
+P: int =
+
+
+def calculate_shared_secret(g: int, secret: int, p: int) -> int:
+    # TODO: Calculate the shared secret and return it
+    return calculation
+
+
+def exchange_base_number(sock: socket.socket) -> int:
+    # TODO: Wait for a client message that sends a base number.
+    # TODO: Return a message that the base number has been received.
+    return proposal
+
+
+def launch_server(server_port: int) -> Tuple[int, int, int]:
+    # TODO: Create a server socket. can be UDP or TCP.
+    # TODO: Wait for the client to propose a base for the key exchange.
+    print("Base int is %s" % x)
+    # TODO: Wait for the nonce computed by the client.
+    # TODO: Also reply to the client.
+    print("Int received from peer is %s" % rx_int)
+    # TODO: Compute the shared secret using the secret number.
+    print("Y is %s" % y)
+    print("Shared secret is %s" % secret)
+    # TODO: Do not forget to close the socket.
+    # TODO: Return the base number, the secret integer, and the shared secret
+    return base, secret_integer, shared_secret
+
+
+def main(args):
+    launch_server(args.server_port)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-s",
+        "--server-port",
+        default="8000",
+        type=int,
+        help="The port the server will listen on.",
+    )
+    # Parse options and process argv
+    arguments = parser.parse_args()
+    main(arguments)
