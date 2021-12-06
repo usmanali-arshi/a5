@@ -15,11 +15,25 @@ def create_ssl_socket(website_url: str) -> ssl.SSLSocket:
     # TODO: Create a TCP socket and wrap it in an SSL context.
     # with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     #     pass
+    tcp_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    # tcp_sock.connect(("127.0.0.1", SSL_PORT))
     context = ssl.create_default_context()
-    # tcpClient = socket(AF_INET, SOCK_STREAM)
-    ssl_socket = context.wrap_socket(socket.socket(socket.AF_INET), server_hostname=website_url)
+    # 
+    # ssl_socket = context.wrap_socket(tcp_sock, server_hostname=website_url)
+    # ssl_socket.connect((website_url, SSL_PORT))
+    # context = ssl.create_default_context()
+
+    # with socket.create_connection((website_url, SSL_PORT)) as sock:
+    #     with context.wrap_socket(sock, server_hostname=website_url) as ssl_socket:
+    #         print(ssl_socket.version())
+            # ssl_socket.connect((website_url, SSL_PORT))
+
+    ssl_socket = context.wrap_socket(tcp_sock, server_hostname=website_url)
     ssl_socket.connect((website_url, SSL_PORT))
+
+   
     return ssl_socket
+
 
     # with socket.create_connection((website_url, SSL_PORT)) as sock:
     #     with context.wrap_socket(sock, server_hostname=website_url) as ssl_socket:
@@ -28,7 +42,7 @@ def create_ssl_socket(website_url: str) -> ssl.SSLSocket:
 
 def craft_https_request_string(page: str, website_url: str) -> str:
     #  TODO: Craft a well-formatted HTTP GET string.
-    get_string = "GET HTTP/"+page+"\r\nHost: "+website_url+"\r\n\r\n"
+    get_string = "GET "+page+" HTTP/1.0\r\nHost: "+website_url+"\r\n\r\n"
     return get_string
 
 
@@ -41,8 +55,8 @@ def get_peer_certificate(ssl_socket: ssl.SSLSocket) -> Dict[str, Any]:
 
 def send_ssl_https_request(ssl_socket: ssl.SSLSocket, request_string: str) -> str:
     # TODO: Send an HTTPS request to the server using the SSL socket.
-    ssl_socket.sendall(request_string)
-    response = ssl_socket.recv(1024)
+    ssl_socket.sendall(str.encode(request_string))
+    response = ssl_socket.recv(1024).decode()
 
     
 

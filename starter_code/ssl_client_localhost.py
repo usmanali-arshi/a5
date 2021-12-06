@@ -10,11 +10,22 @@ HOST: str = "localhost"
 
 def create_ssl_context() -> ssl.SSLContext:
     # TODO: Create an SSL context. Do not forget to disable security properties.
+    # context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+    # context.load_verify_locations("/etc/ssl/certs/ca-bundle.crt")
+    ctx = ssl.create_default_context()
+    ctx.check_hostname=False
+    ctx.verify_mode=ssl.CERT_NONE
+
+
     return ctx
 
 
 def create_client_ssl_socket(ctx: ssl.SSLContext, host_ip: str) -> ssl.SSLSocket:
     # TODO: Wrap the socket using the SSL context.
+    client_sock  = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket = ctx.wrap_socket(client_sock, server_hostname= host_ip)
+    
+
     return client_socket
 
 
@@ -24,7 +35,12 @@ def launch_client(server_port: int) -> None:
     # TODO: Create an SSL client socket.
     client_socket = create_client_ssl_socket(ctx, HOST)
     # TODO: Connect to the server and send an encrypted SSL message.
+    client_socket.connect((HOST, server_port ))
+
+
     msg = b"This message is encrypted with SSL."
+    client_socket.send(msg.encode())
+    client_socket.close()
     # TODO: Do not forget to close the socket.
 
 
