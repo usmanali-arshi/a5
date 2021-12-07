@@ -16,9 +16,10 @@ def exchange_base_number(sock: socket.socket, server_port: int) -> int:
     # TODO: Connect to the server and propose a base number.
     # tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect((HOST, server_port))
-    proposal = random.randint(1, P-1)
+    # proposal = random.randint(1, P-1)
+    proposal = 90
     # TODO: This should be a random number.
-    print("Base proposal successful.")
+    # print("Base proposal successful.")
     return proposal
 
 
@@ -32,25 +33,28 @@ def calculate_shared_secret(g: int, secret: int, p: int) -> int:
 def generate_shared_secret(server_port: int) -> Tuple[int, int, int]:
     # TODO: Create a socket and send the proposed base number to the server.
     tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    # y = random.randint(1, 100)
+    y = 5
     x = exchange_base_number (tcp_socket, server_port)
     tcp_socket.send(x.to_bytes(4, 'big'))
-    y = random.randint(1, 100)
+    
     print("Base int is %s" % x)
 
     # TODO: Calculate the message the client sends using the secret integer.
     
 
     pub_key = calculate_shared_secret(x, y , P )
-    print("Y is %s" % y)
+    
 
     # TODO: Send it to the server.
     tcp_socket.send(pub_key.to_bytes(4, 'big'))
 
     # TODO: Calculate the secret based on the server reply.
-    rx_int = tcp_socket.recv(1024)
+    rx_int = tcp_socket.recv(4)
     rx_int = int.from_bytes(rx_int, 'big')
-    secret = calculate_shared_secret(rx_int, y, x)
+    secret = calculate_shared_secret(rx_int, y, P)
     print("Int received from peer is %s" % rx_int)
+    print("Y is %s" % y)
 
 
     print("Shared secret is %s" % secret)
