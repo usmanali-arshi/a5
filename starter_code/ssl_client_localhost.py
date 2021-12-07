@@ -13,9 +13,8 @@ def create_ssl_context() -> ssl.SSLContext:
     # context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
     # context.load_verify_locations("/etc/ssl/certs/ca-bundle.crt")
     ctx = ssl.create_default_context()
-    ctx.check_hostname=False
-    ctx.verify_mode=ssl.CERT_NONE
-
+    ctx.check_hostname= False
+    ctx.verify_mode = ssl.CERT_NONE
 
     return ctx
 

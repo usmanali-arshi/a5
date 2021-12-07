@@ -12,7 +12,7 @@ def create_ssl_context(cert_file: str) -> ssl.SSLContext:
     # TODO: Create an SSL context for the server side. You need to load your certificate.
 
     ctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
-    ctx.load_cert_chain(certfile="cert")
+    ctx.load_cert_chain(certfile=cert_file)
     # ctx.check_hostname=False
     # ctx.verify_mode=ssl.CERT_NONE
 
@@ -45,7 +45,7 @@ def wait_for_ssl_connection(ssl_context: ssl.SSLContext, server_socket: socket.s
 
 def launch_server(server_port: int, cert_file: str) -> bytes:
     # TODO: Use the helper functions to create an SSL server.
-    ssl _cxt = create_ssl_context(cert_file)
+    ssl_cxt = create_ssl_context(cert_file)
     server_sock = create_server_socket(HOST, 10023)
     while True:
         conStream = wait_for_ssl_connection(ssl_cxt, server_sock)
